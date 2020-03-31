@@ -1,0 +1,60 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Hospital App
+host: localhost:10010
+basePath: /
+schemes:
+  - http
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /members:
+    x-swagger-router-controller: member
+    get:
+      description:  Get members (Both Patients + Care Staff)
+      operationId: getPatientWithCarestaff
+      parameters:
+        - name: patientId
+          in: query
+          description: The id of the patient wholse details with care staff to be fetched.
+          required: false
+          type: integer
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/MemberResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /swagger:
+    x-swagger-pipe: swagger_raw
+definitions:
+  MemberResponse:
+    required:
+      - members
+    properties:
+      members:
+        type: object
+        properties:
+          Id:
+            type: integer
+          First Name:
+            type: string
+          Last Name:
+            type: string
+          Contact_Number:
+            type: string
+          Email:
+            type: string
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
